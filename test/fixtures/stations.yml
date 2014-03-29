@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  station_id: 1
+  name: MyString
+  lat: 9.99
+  lng: 9.99
+  dock_count: 1
+  landmark: MyString
+  installed_at: 2014-03-26
+
+two:
+  station_id: 1
+  name: MyString
+  lat: 9.99
+  lng: 9.99
+  dock_count: 1
+  landmark: MyString
+  installed_at: 2014-03-26
