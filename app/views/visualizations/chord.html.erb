@@ -29,6 +29,8 @@
   }
 </style>
 
+<div id="tooltip" style="visibility: hidden; top: 625px; left: 326px;"></div>
+
 <script>
   //*******************************************************************
   //  CREATE MATRIX AND MAP
@@ -109,18 +111,14 @@
             .on("mouseout", function (d) { d3.select("#tooltip").style("visibility", "hidden") });
 
       function chordTip (d) {
-        var p = d3.format(".1%"), q = d3.format(",.2r")
-        return "Chord Info:<br/>"
-          +  d.sname + " → " + d.tname
-          + ": " + p(d.svalue) + "<br/>"
+        return d.sname + " → " + d.tname
+          + ": " + d.svalue + " trips<br/>"
           + d.tname + " → " + d.sname
-          + ": " + p(d.tvalue) + "<br/>";
+          + ": " + d.tvalue + " trips<br/>";
       }
 
       function groupTip (d) {
-        var p = d3.format(".1%"), q = d3.format(",.2r")
-        return "Group Info:<br/>"
-            + d.gname + " : " + p(d.gvalue) + "<br/>";
+        return d.gname + " : " + d.gvalue + " trips<br/>";
         }
 
       function mouseover(d, i) {

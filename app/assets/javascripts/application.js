@@ -12,5 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap.min
+//= require d3.min
+//= require queue.min
+//= require underscore-min
+//= require flat-ui
 //= require turbolinks
 //= require_tree .

@@ -1,5 +1,5 @@
 //*******************************************************************
-//  CHORD MAPPER 
+//  CHORD MAPPER
 //*******************************************************************
 function chordMpr (data) {
   var mpr = {}, mmap = {}, n = 0,
@@ -72,9 +72,9 @@ function chordRdr (matrix, mmap) {
       g = _.where(mmap, {id: d.index });
       m.gname = g[0].name;
       m.gdata = g[0].data;
-      m.gvalue = d.value;
+      m.gvalue = Math.round(d.value);
     }
-    m.mtotal = _.reduce(matrix, function (m1, n1) { 
+    m.mtotal = _.reduce(matrix, function (m1, n1) {
       return m1 + _.reduce(n1, function (m2, n2) { return m2 + n2}, 0);
     }, 0);
     return m;
