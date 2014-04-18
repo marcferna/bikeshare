@@ -29,8 +29,11 @@
   }
 </style>
 
+<h3>Trips per station</h3>
+<p>The following chord diagram shows all the trips made by station</p>
 <div id="tooltip" style="visibility: hidden; top: 625px; left: 326px;"></div>
-
+<div id="chord"></div>
+<hr>
 <script>
   //*******************************************************************
   //  CREATE MATRIX AND MAP
@@ -45,7 +48,7 @@
   //  DRAW THE CHORD DIAGRAM
   //*******************************************************************
   function drawChords (matrix, mmap) {
-    var w = 980 * 1.5, h = 800 * 1.5, r1 = h / 2, r0 = r1 - 110;
+    var w = 1000, h = 900, r1 = h / 2, r0 = r1 - 110;
 
     var chord = d3.layout.chord()
         .padding(.02)
@@ -56,7 +59,7 @@
         .innerRadius(r0)
         .outerRadius(r0 + 20);
 
-    var svg = d3.select("body").append("svg:svg")
+    var svg = d3.select("#chord").append("svg")
         .attr("width", w)
         .attr("height", h)
         .append("svg:g")
