@@ -24,4 +24,17 @@ class VisualizationsController < ApplicationController
 
     render json: {mmap: @stations_data, matrix: @matrix}
   end
+
+  def heat_map_data
+    trips = Trip.group("WEEKDAY(started_at)").group("HOUR(started_at)").count
+    @matrix = []
+    trips.each do |value|
+      @matrix << {
+        day: value[0][0] + 1,
+        hour: value[0][1] + 1,
+        value: value[1],
+      }
+    end
+    render json: @matrix and return
+  end
 end
