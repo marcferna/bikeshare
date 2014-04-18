@@ -1,15 +1,15 @@
 Bikeshare::Application.routes.draw do
 
   controller :visualizations do
-    get 'chord' => :chord
     get 'chord_data' => :chord_data
+    get 'heat_map_data' => :heat_map_data
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
