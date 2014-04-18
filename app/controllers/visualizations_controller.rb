@@ -37,4 +37,11 @@ class VisualizationsController < ApplicationController
     end
     render json: @matrix and return
   end
+
+  def subscriptors
+    render json: [
+      {label: "Subscriptors", value: Trip.where(subscription_type: 1).count},
+      {label: "Non-Subscriptors", value: Trip.where(subscription_type: 0).count}
+    ]
+  end
 end

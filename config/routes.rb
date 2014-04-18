@@ -3,6 +3,7 @@ Bikeshare::Application.routes.draw do
   controller :visualizations do
     get 'chord_data' => :chord_data
     get 'heat_map_data' => :heat_map_data
+    get 'subscriptors' => :subscriptors
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
