@@ -26,9 +26,9 @@
 
 @font-face {
   font-family: 'Flatui Halflings';
-  src: url('../assets/flatui-halflings-regular.eot');
-  src: url('../assets/flatui-halflings-regular.eot?#iefix') format('embedded-opentype'),
-       url('../assets/flatui-halflings-regular.woff') format('woff'),
-       url('../assets/flatui-halflings-regular.ttf') format('truetype'),
-       url('../assets/flatui-halflings-regular.svg#flatui_halflingsregular') format('svg');
+  src: url('../assets/fonts/flat-ui-icons-regular.eot');
+  src: url('../assets/fonts/flat-ui-icons-regular.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/flat-ui-icons-regular.woff') format('woff'),
+       url('../assets/fonts/flat-ui-icons-regular.ttf') format('truetype'),
+       url('../assets/fonts/flat-ui-icons-regular.svg#flatui_iconsregular') format('svg');
 }
