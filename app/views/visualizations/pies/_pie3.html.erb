@@ -1,10 +1,11 @@
 <div id="pie3" style="height: 250px"></div>
 <p style="text-align: center">
-  The <b style="font-size: 24px;"><%= number_to_percentage(@subscribers_percentage, precision: 2) %></b>
-  of the trips were made by subscribers and the rest
-  <b style="font-size: 24px;"><%= number_to_percentage(@customers_percentage, precision: 2) %></b>
-  were made by costumers.<br/>* A subscriber is an annual member and a
-  customer is a 24-hour or 3-day member.
+  The Bay Area Bike Share bikers try to stay dry during rainy days and their
+  trips are <span class="pie_stat"><%= number_to_percentage(100 - @rain_percentage, precision: 0) %></span>
+  shorter in time than non-rainy days
+  (<span class="pie_stat"><%= @clear_minutes  %></span> Vs.
+  <span class="pie_stat"><%= @rain_minutes %></span> minutes during rain).
+
 </p>
 
 <script>
@@ -46,7 +47,7 @@ var color = d3.scale.ordinal()
   .range(["#98abc5", "#8a89a6"]);
 
 
-d3.json("subscriptors.json", function(error, data) {
+d3.json("rainy_days.json", function(error, data) {
 
   data.forEach(function(d) {
     d.population = +d.population;
@@ -100,7 +101,7 @@ d3.json("subscriptors.json", function(error, data) {
       return function(t) {
         var d2 = interpolate(t);
         var pos = outerArc.centroid(d2);
-        pos[0] = radius * 0.7 * (midAngle(d2) < Math.PI ? 1 : -1);
+        pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
         return "translate("+ pos +")";
       };
     })
@@ -133,7 +134,7 @@ d3.json("subscriptors.json", function(error, data) {
       return function(t) {
         var d2 = interpolate(t);
         var pos = outerArc.centroid(d2);
-        pos[0] = radius * 0.65 * (midAngle(d2) < Math.PI ? 1 : -1);
+        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
         return [arc.centroid(d2), outerArc.centroid(d2), pos];
       };
     });

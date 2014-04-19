@@ -59,4 +59,14 @@ class VisualizationsController < ApplicationController
       { label: "Night", value: night }
     ]
   end
+
+  def rainy_days
+    rainy_days = Weather.where("precipitation > 0").where(landmark: "San Francisco").pluck(:date)
+    rain = Trip.where("DATE(started_at) IN (?)", rainy_days).average(:duration).to_i
+    clear = Trip.where("DATE(started_at) NOT IN (?)", rainy_days).average(:duration).to_i
+    render json: [
+      { label: "Rain", value: rain },
+      { label: "No Rain", value: clear }
+    ]
+  end
 end

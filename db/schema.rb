@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140329072554) do
+ActiveRecord::Schema.define(version: 20140419071749) do
 
   create_table "stations", force: true do |t|
     t.integer "station_id"
@@ -40,5 +40,18 @@ ActiveRecord::Schema.define(version: 20140329072554) do
   add_index "trips", ["end_station_id"], name: "index_trips_on_end_station_id", using: :btree
   add_index "trips", ["start_station_id", "end_station_id"], name: "index_trips_on_start_station_id_and_end_station_id", using: :btree
   add_index "trips", ["start_station_id"], name: "index_trips_on_start_station_id", using: :btree
+
+  create_table "weathers", force: true do |t|
+    t.date     "date"
+    t.integer  "max_temperature"
+    t.integer  "mean_temperature"
+    t.integer  "min_temperature"
+    t.decimal  "precipitation",    precision: 4, scale: 3
+    t.integer  "cloud_cover"
+    t.string   "event"
+    t.string   "landmark"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

@@ -19,5 +19,14 @@ class HomeController < ApplicationController
     @afternoon_percentage = (100 * @afternoon) / total.to_f
     @evening_percentage = (100 * @evening) / total.to_f
     @night_percentage = (100 * @night) / total.to_f
+
+    # Rainy days
+    rainy_days = Weather.where("precipitation > 0").where(landmark: "San Francisco").pluck(:date)
+    rain = Trip.where("DATE(started_at) IN (?)", rainy_days).average(:duration).to_i
+    clear = Trip.where("DATE(started_at) NOT IN (?)", rainy_days).average(:duration).to_i
+
+    @rain_minutes = rain / 60.to_i
+    @clear_minutes = clear / 60.to_i
+    @rain_percentage = (@rain_minutes * 100) / @clear_minutes.to_f
   end
 end

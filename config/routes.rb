@@ -5,6 +5,8 @@ Bikeshare::Application.routes.draw do
     get 'heat_map_data' => :heat_map_data
     get 'subscriptors' => :subscriptors
     get 'time_of_day' => :time_of_day
+        get 'rainy_days' => :rainy_days
+
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
