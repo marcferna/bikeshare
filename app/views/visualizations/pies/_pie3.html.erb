@@ -1,0 +1,145 @@
+<div id="pie3" style="height: 250px"></div>
+<p style="text-align: center">
+  The <b style="font-size: 24px;"><%= number_to_percentage(@subscribers_percentage, precision: 2) %></b>
+  of the trips were made by subscribers and the rest
+  <b style="font-size: 24px;"><%= number_to_percentage(@customers_percentage, precision: 2) %></b>
+  were made by costumers.<br/>* A subscriber is an annual member and a
+  customer is a 24-hour or 3-day member.
+</p>
+
+<script>
+
+var svg3 = d3.select("#pie3")
+  .append("svg")
+  .append("g")
+
+svg3.append("g")
+  .attr("class", "slices");
+svg3.append("g")
+  .attr("class", "labels");
+svg3.append("g")
+  .attr("class", "lines");
+
+var width = 390,
+    height = 230,
+    radius = Math.min(width, height) / 2;
+
+var pie3 = d3.layout.pie()
+  .sort(null)
+  .value(function(d) {
+    return d.value;
+  });
+
+var arc = d3.svg.arc()
+  .outerRadius(radius * 0.8)
+  .innerRadius(radius * 0.4);
+
+var outerArc = d3.svg.arc()
+  .innerRadius(radius * 0.9)
+  .outerRadius(radius * 0.9);
+
+svg3.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var key = function(d){ return d.data.label; };
+
+var color = d3.scale.ordinal()
+  .range(["#98abc5", "#8a89a6"]);
+
+
+d3.json("subscriptors.json", function(error, data) {
+
+  data.forEach(function(d) {
+    d.population = +d.population;
+  });
+
+  /* ------- PIE SLICES -------*/
+  var slice = svg3.select(".slices").selectAll("path.slice")
+    .data(pie3(data), key);
+
+  slice.enter()
+    .insert("path")
+    .style("fill", function(d) { return color(d.data.label); })
+    .attr("class", "slice");
+
+  slice
+    .transition().duration(500)
+    .attrTween("d", function(d) {
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
+      this._current = interpolate(0);
+      return function(t) {
+        return arc(interpolate(t));
+      };
+    })
+
+  slice.exit()
+    .remove();
+
+  /* ------- TEXT LABELS -------*/
+
+  var text = svg3.select(".labels").selectAll("text")
+    .data(pie3(data), key);
+
+  text.enter()
+    .append("text")
+    .attr("dy", ".35em")
+    .attr("class", "pie_label")
+    .text(function(d) {
+      return d.data.label;
+    });
+
+  function midAngle(d){
+    return d.startAngle + (d.endAngle - d.startAngle)/2;
+  }
+
+  text.transition().duration(500)
+    .attrTween("transform", function(d) {
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
+      this._current = interpolate(0);
+      return function(t) {
+        var d2 = interpolate(t);
+        var pos = outerArc.centroid(d2);
+        pos[0] = radius * 0.7 * (midAngle(d2) < Math.PI ? 1 : -1);
+        return "translate("+ pos +")";
+      };
+    })
+    .styleTween("text-anchor", function(d){
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
+      this._current = interpolate(0);
+      return function(t) {
+        var d2 = interpolate(t);
+        return midAngle(d2) < Math.PI ? "start":"end";
+      };
+    });
+
+  text.exit()
+    .remove();
+
+  /* ------- SLICE TO TEXT POLYLINES -------*/
+
+  var polyline = svg3.select(".lines").selectAll("polyline")
+    .data(pie3(data), key);
+
+  polyline.enter()
+    .append("polyline");
+
+  polyline.transition().duration(1000)
+    .attrTween("points", function(d){
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
+      this._current = interpolate(0);
+      return function(t) {
+        var d2 = interpolate(t);
+        var pos = outerArc.centroid(d2);
+        pos[0] = radius * 0.65 * (midAngle(d2) < Math.PI ? 1 : -1);
+        return [arc.centroid(d2), outerArc.centroid(d2), pos];
+      };
+    });
+
+  polyline.exit()
+    .remove();
+});
+
+</script>

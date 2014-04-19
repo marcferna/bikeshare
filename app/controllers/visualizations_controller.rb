@@ -30,8 +30,8 @@ class VisualizationsController < ApplicationController
     @matrix = []
     trips.each do |value|
       @matrix << {
-        day: value[0][0] + 1,
-        hour: value[0][1] + 1,
+        day:   value[0][0] + 1,
+        hour:  value[0][1] + 1,
         value: value[1],
       }
     end
@@ -39,9 +39,24 @@ class VisualizationsController < ApplicationController
   end
 
   def subscriptors
+    subscribers     = Trip.subscribers.count
+    non_subscribers = Trip.customers.count
     render json: [
-      {label: "Subscriptors", value: Trip.where(subscription_type: 1).count},
-      {label: "Non-Subscriptors", value: Trip.where(subscription_type: 0).count}
+      { label: "Subscribers", value: subscribers },
+      { label: "Customers", value: non_subscribers }
+    ]
+  end
+
+  def time_of_day
+    morning = Trip.morning.count
+    afternoon = Trip.afternoon.count
+    evening = Trip.evening.count
+    night = Trip.night.count
+    render json: [
+      { label: "Morning", value: morning },
+      { label: "Afternoon", value: afternoon },
+      { label: "Evening", value: evening },
+      { label: "Night", value: night }
     ]
   end
 end

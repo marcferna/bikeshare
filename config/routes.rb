@@ -4,6 +4,7 @@ Bikeshare::Application.routes.draw do
     get 'chord_data' => :chord_data
     get 'heat_map_data' => :heat_map_data
     get 'subscriptors' => :subscriptors
+    get 'time_of_day' => :time_of_day
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

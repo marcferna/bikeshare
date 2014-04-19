@@ -10,160 +10,26 @@ polyline{
   stroke-width: 2px;
   fill: none;
 }
+.pie_label {
+  font-size: 12px;
+}
+.pie_stat{
+  font-size: 20px;
+  font-weight: bold;
+}
 
 </style>
 
+
 <div class="row">
   <div class="col-md-4">
-    <div id="pie1" style="height: 250px"></div>
-    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+    <%= render partial: "/visualizations/pies/pie1" %>
   </div>
   <div class="col-md-4">
-    <div id="pie" style="height: 250px"></div>
-    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
- </div>
+    <%= render partial: "/visualizations/pies/pie2" %>
+  </div>
   <div class="col-md-4">
-    <div id="pie" style="height: 250px"></div>
-    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+    <%= render partial: "/visualizations/pies/pie3" %>
   </div>
 </div>
 <hr>
-
-<script>
-
-var svg = d3.select("#pie1")
-  .append("svg")
-  .append("g")
-
-svg.append("g")
-  .attr("class", "slices");
-svg.append("g")
-  .attr("class", "labels");
-svg.append("g")
-  .attr("class", "lines");
-
-var width = 360,
-    height = 230,
-  radius = Math.min(width, height) / 2;
-
-var pie = d3.layout.pie()
-  .sort(null)
-  .value(function(d) {
-    return d.value;
-  });
-
-var arc = d3.svg.arc()
-  .outerRadius(radius * 0.8)
-  .innerRadius(radius * 0.4);
-
-var outerArc = d3.svg.arc()
-  .innerRadius(radius * 0.9)
-  .outerRadius(radius * 0.9);
-
-svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-var key = function(d){ return d.data.label; };
-
-var color = d3.scale.ordinal()
-  .range(["#98abc5", "#8a89a6"]);
-
-
-d3.json("subscriptors.json", function(error, data) {
-
-  data.forEach(function(d) {
-    d.population = +d.population;
-  });
-
-  /* ------- PIE SLICES -------*/
-  var slice = svg.select(".slices").selectAll("path.slice")
-    .data(pie(data), key);
-
-  slice.enter()
-    .insert("path")
-    .style("fill", function(d) { return color(d.data.label); })
-    .attr("class", "slice");
-
-  slice
-    .transition().duration(500)
-    .attrTween("d", function(d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        return arc(interpolate(t));
-      };
-    })
-
-  slice.exit()
-    .remove();
-
-  /* ------- TEXT LABELS -------*/
-
-  var text = svg.select(".labels").selectAll("text")
-    .data(pie(data), key);
-
-  text.enter()
-    .append("text")
-    .attr("dy", ".35em")
-    .text(function(d) {
-      return d.data.label;
-    });
-
-  function midAngle(d){
-    return d.startAngle + (d.endAngle - d.startAngle)/2;
-  }
-
-  text.transition().duration(500)
-    .attrTween("transform", function(d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        var pos = outerArc.centroid(d2);
-        pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-        return "translate("+ pos +")";
-      };
-    })
-    .styleTween("text-anchor", function(d){
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        return midAngle(d2) < Math.PI ? "start":"end";
-      };
-    });
-
-  text.exit()
-    .remove();
-
-  /* ------- SLICE TO TEXT POLYLINES -------*/
-
-  var polyline = svg.select(".lines").selectAll("polyline")
-    .data(pie(data), key);
-
-  polyline.enter()
-    .append("polyline");
-
-  polyline.transition().duration(1000)
-    .attrTween("points", function(d){
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        var pos = outerArc.centroid(d2);
-        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-        return [arc.centroid(d2), outerArc.centroid(d2), pos];
-      };
-    });
-
-  polyline.exit()
-    .remove();
-});
-
-</script>
