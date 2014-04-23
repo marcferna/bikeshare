@@ -39,7 +39,7 @@
   //  CREATE MATRIX AND MAP
   //*******************************************************************
   queue()
-    .defer(d3.json, 'chord_data.json')
+    .defer(d3.json, 'chord_data/<%= @selected_city %>' )
     .await(function(err, data) {
       if (err) console.log(err);
       drawChords(data.matrix, data.mmap);

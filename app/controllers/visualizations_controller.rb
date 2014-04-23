@@ -1,9 +1,8 @@
 class VisualizationsController < ApplicationController
 
   def chord_data
-    stations = Station.where(landmark: "San Francisco")
     @stations_data = []
-    stations.each_with_index do |station, index|
+    @stations.each_with_index do |station, index|
       color = "%06x" % (rand * 0xffffff)
       @stations_data << {
         id:    index,
@@ -14,9 +13,9 @@ class VisualizationsController < ApplicationController
     end
 
     @matrix = []
-    stations.each do |start_station|
+    @stations.each do |start_station|
       trips = []
-      stations.each do |end_station|
+      @stations.each do |end_station|
         trips << Trip.where(start_station_id: start_station).where(end_station_id: end_station).count
       end
       @matrix << trips
@@ -26,7 +25,10 @@ class VisualizationsController < ApplicationController
   end
 
   def heat_map_data
-    trips = Trip.group("WEEKDAY(started_at)").group("HOUR(started_at)").count
+    trips = Trip.where(start_station_id: @stations)
+                .group("WEEKDAY(started_at)")
+                .group("HOUR(started_at)")
+                .count
     @matrix = []
     trips.each do |value|
       @matrix << {
@@ -39,8 +41,8 @@ class VisualizationsController < ApplicationController
   end
 
   def subscriptors
-    subscribers     = Trip.subscribers.count
-    non_subscribers = Trip.customers.count
+    subscribers     = Trip.where(start_station_id: @stations).subscribers.count
+    non_subscribers = Trip.where(start_station_id: @stations).customers.count
     render json: [
       { label: "Subscribers", value: subscribers },
       { label: "Customers", value: non_subscribers }
@@ -48,10 +50,10 @@ class VisualizationsController < ApplicationController
   end
 
   def time_of_day
-    morning = Trip.morning.count
-    afternoon = Trip.afternoon.count
-    evening = Trip.evening.count
-    night = Trip.night.count
+    morning   = Trip.where(start_station_id: @stations).morning.count
+    afternoon = Trip.where(start_station_id: @stations).afternoon.count
+    evening   = Trip.where(start_station_id: @stations).evening.count
+    night     = Trip.where(start_station_id: @stations).night.count
     render json: [
       { label: "Morning", value: morning },
       { label: "Afternoon", value: afternoon },
@@ -61,9 +63,17 @@ class VisualizationsController < ApplicationController
   end
 
   def rainy_days
-    rainy_days = Weather.where("precipitation > 0").where(landmark: "San Francisco").pluck(:date)
-    rain = Trip.where("DATE(started_at) IN (?)", rainy_days).average(:duration).to_i
-    clear = Trip.where("DATE(started_at) NOT IN (?)", rainy_days).average(:duration).to_i
+    if @selected_city == "All cities"
+      rainy_days = Weather.where("precipitation > 0").pluck(:date)
+    else
+      rainy_days = Weather.where("precipitation > 0").where(landmark: @selected_city).pluck(:date)
+    end
+    rain = Trip.where(start_station_id: @stations)
+               .where("DATE(started_at) IN (?)", rainy_days)
+               .average(:duration).to_i
+    clear = Trip.where(start_station_id: @stations)
+                .where("DATE(started_at) NOT IN (?)", rainy_days)
+                .average(:duration).to_i
     render json: [
       { label: "Rain", value: rain },
       { label: "No Rain", value: clear }

@@ -47,7 +47,7 @@ var color = d3.scale.ordinal()
   .range(["#98abc5", "#8a89a6"]);
 
 
-d3.json("rainy_days.json", function(error, data) {
+d3.json("rainy_days/<%= @selected_city %>", function(error, data) {
 
   data.forEach(function(d) {
     d.population = +d.population;
