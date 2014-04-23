@@ -32,5 +32,21 @@ class HomeController < ApplicationController
     @rain_minutes = rain / 60.to_i
     @clear_minutes = clear / 60.to_i
     @rain_percentage = (@rain_minutes * 100) / @clear_minutes.to_f
+
+    # stats
+    @bikes_count = Trip.count(:bike_id, distinct: true)
+    bikes_trip_count = Trip.group(:bike_id).order("count_all DESC").count.to_a
+    @most_used_bike = bikes_trip_count.first.first
+    @least_used_bike = bikes_trip_count.last.first
+
+    @stations_count = Station.count
+    stations_started_count = Trip.group(:start_station_id).order("count_all DESC").count.to_a
+    @most_station_started = Station.find_by_id(stations_started_count.first.first)
+    @least_station_started = Station.find_by_id(stations_started_count.last.first)
+
+    @trips_count = Trip.count
+    @average_travel_time = Trip.average(:duration).to_f / 60
+    @longest_trip = Trip.order(:duration).last.duration.to_f / 60
+
   end
 end

@@ -1,0 +1,86 @@
+<style>
+.stat {
+  font-size: 40px;
+  font-weight: bold;
+  float:left;
+}
+.stat-text {
+  font-size: 30px;
+}
+.stat-icon {
+  width: 150px;
+}
+</style>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @bikes_count,
+      stat_text: "bikes",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @most_used_bike,
+      stat_text: "most used bike",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @least_used_bike,
+      stat_text: "least used bike",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @stations_count,
+      stat_text: "stations",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @most_station_started.name,
+      stat_text: "most used station",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @least_station_started.name,
+      stat_text: "least used station",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @trips_count,
+      stat_text: "trips",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @average_travel_time.to_i,
+      stat_text: "average trip duration",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "/visualizations/stats/default_stat", locals: {
+      stat_number: @longest_trip.to_i,
+      stat_text: "longest ride",
+      stat_icon: "icons/trip_icon.png",
+    } %>
+  </div>
+</div>
+<hr>
