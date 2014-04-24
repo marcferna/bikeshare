@@ -1,10 +1,10 @@
 <style>
   #tooltip {
     color: white;
+    font-size: 16px;
     opacity: .9;
     background: #333;
     padding: 5px;
-    border: 1px solid lightgrey;
     border-radius: 5px;
     position: absolute;
     z-index: 10;
@@ -30,7 +30,13 @@
 </style>
 
 <h3>Trips per station</h3>
-<p>The following chord diagram shows all the trips made by station</p>
+<p>
+  The following chord diagram shows all the trips made by station.
+  Mouse over each station to see that station individually and mouse over each cord
+  to find out the exact number of trips between stations. Note that the width of the
+  cord represents the number of trips - the wider the chord the more trips were made
+  between those stations.
+</p>
 <div id="tooltip" style="visibility: hidden; top: 625px; left: 326px;"></div>
 <div id="chord"></div>
 <hr>
