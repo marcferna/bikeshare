@@ -24,14 +24,14 @@
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: @bikes_count,
       stat_text: "bikes",
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
   <div class="col-md-4">
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: @stations_count,
       stat_text: "stations",
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
 
@@ -43,14 +43,14 @@
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: number_with_delimiter(@trips_count),
       stat_text: "trips",
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
   <div class="col-md-4">
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: "<span style='font-size: 50px;'>no. #{@most_used_bike}</span>".html_safe,
       stat_text: "<span class='small'>most used bike</span>".html_safe,
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
 </div>
@@ -61,14 +61,14 @@
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: "#{@average_travel_time.to_i} min",
       stat_text: "<span style='font-size: 20px'>average ride time</span>".html_safe,
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
   <div class="col-md-4">
     <%= render partial: "/visualizations/stats/default_stat", locals: {
       stat_number: "<span #{@longest_trip.to_i.to_s.length > 3 ? "style='font-size: 32px'" : ""}>#{number_with_delimiter(@longest_trip.to_i)} min</span>".html_safe,
       stat_text: "<span style='font-size: 20px'>longest ride time</span>".html_safe,
-      stat_icon: "icons/trip_icon.png",
+      stat_icon: "trip-icon.png",
     } %>
   </div>
 </div>
