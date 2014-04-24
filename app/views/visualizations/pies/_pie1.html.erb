@@ -3,7 +3,7 @@
   The <span class="pie_stat"><%= number_to_percentage(@subscribers_percentage, precision: 2) %></span>
   of the trips were made by subscribers and the rest
   <span class="pie_stat"><%= number_to_percentage(@customers_percentage, precision: 2) %></span>
-  were made by costumers.<br/>* A subscriber is an annual member and a
+  were made by customers.<br/>* A subscriber is an annual member and a
   customer is a 24-hour or 3-day member.
 </p>
 
@@ -11,6 +11,7 @@
 
 var svg = d3.select("#pie1")
   .append("svg")
+  .attr("style", "padding: 0px 10px")
   .append("g")
 
 svg.append("g")
@@ -100,7 +101,7 @@ d3.json("subscriptors/<%= @selected_city %>", function(error, data) {
       return function(t) {
         var d2 = interpolate(t);
         var pos = outerArc.centroid(d2);
-        pos[0] = radius * 0.7 * (midAngle(d2) < Math.PI ? 1 : -1);
+        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
         return "translate("+ pos +")";
       };
     })
@@ -133,7 +134,7 @@ d3.json("subscriptors/<%= @selected_city %>", function(error, data) {
       return function(t) {
         var d2 = interpolate(t);
         var pos = outerArc.centroid(d2);
-        pos[0] = radius * 0.65 * (midAngle(d2) < Math.PI ? 1 : -1);
+        pos[0] = radius * 0.90 * (midAngle(d2) < Math.PI ? 1 : -1);
         return [arc.centroid(d2), outerArc.centroid(d2), pos];
       };
     });
