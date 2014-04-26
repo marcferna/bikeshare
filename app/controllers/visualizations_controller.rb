@@ -1,27 +1,32 @@
 class VisualizationsController < ApplicationController
 
   def chord_data
-    @stations_data = []
-    @stations.each_with_index do |station, index|
-      color = "%06x" % (rand * 0xffffff)
-      @stations_data << {
-        id:    index,
-        color: color,
-        data:  color,
-        name:  station.name
-      }
-    end
-
-    @matrix = []
-    @stations.each do |start_station|
-      trips = []
-      @stations.each do |end_station|
-        trips << Trip.where(start_station_id: start_station).where(end_station_id: end_station).count
+    cache_key = "chord_data_" + @selected_city.downcase.tr(" ","_")
+    response = Rails.cache.read(cache_key)
+    unless response.present?
+      @stations_data = []
+      @stations.each_with_index do |station, index|
+        color = "%06x" % (rand * 0xffffff)
+        @stations_data << {
+          id:    index,
+          color: color,
+          data:  color,
+          name:  station.name
+        }
       end
-      @matrix << trips
-    end
 
-    render json: {mmap: @stations_data, matrix: @matrix}
+      @matrix = []
+      @stations.each do |start_station|
+        trips = []
+        @stations.each do |end_station|
+          trips << Trip.where(start_station_id: start_station).where(end_station_id: end_station).count
+        end
+        @matrix << trips
+      end
+      response = {mmap: @stations_data, matrix: @matrix}
+      Rails.cache.write(cache_key, response)
+    end
+    render json: response
   end
 
   def heat_map_data

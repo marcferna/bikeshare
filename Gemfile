@@ -34,6 +34,9 @@ group :production do
   gem 'newrelic_rpm'
 end
 
+gem 'memcachier'
+gem 'dalli'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
