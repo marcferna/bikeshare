@@ -49,4 +49,10 @@ class HomeController < ApplicationController
     @longest_trip = Trip.where(start_station_id: @stations).order(:duration).last.duration.to_f / 60
 
   end
+
+  def ping
+    render json: {
+       status: "ok"
+    } and return
+  end
 end

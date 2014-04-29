@@ -6,9 +6,9 @@ Bikeshare::Application.routes.draw do
     get 'subscriptors/(:city)' => :subscriptors
     get 'time_of_day/(:city)' => :time_of_day
     get 'rainy_days/(:city)' => :rainy_days
-
   end
 
+  get "/ping" => "home#ping"
   get "/(:city)" => "home#index"
   post "/(:city)" => "home#index"
 end
